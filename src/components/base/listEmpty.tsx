@@ -1,5 +1,6 @@
 import { RequestStateCode } from "@/constants/commonConst";
 import { fontSizeConst } from "@/constants/uiConst";
+import { spacing, radius } from "@/constants/designTokens";
 import useColors from "@/hooks/useColors";
 import rpx from "@/utils/rpx";
 import React from "react";
@@ -37,7 +38,9 @@ export default function ListEmpty(props: IEmptyProps) {
             <ThemeText fontSize="title">
                 {t("common.error")}
             </ThemeText>
-            <TouchableOpacity onPress={onRetry} style={style.retryButton}>
+            <TouchableOpacity
+                onPress={onRetry}
+                style={[style.retryButton, { backgroundColor: colors.listActive }]}>
                 <ThemeText>{t("common.clickToRetry")}</ThemeText>
             </TouchableOpacity>
         </View>;
@@ -52,12 +55,11 @@ const style = StyleSheet.create({
         minHeight: rpx(540),
         justifyContent: "center",
         alignItems: "center",
-        gap: rpx(36),
+        gap: spacing.xl,
     },
     retryButton: {
-        paddingVertical: rpx(24),
-        paddingHorizontal: rpx(48),
-        borderRadius: rpx(36),
-        backgroundColor: "rgba(128, 128, 128, 0.2)",
+        paddingVertical: spacing.lg,
+        paddingHorizontal: spacing.xxl,
+        borderRadius: radius.large,
     },
 });

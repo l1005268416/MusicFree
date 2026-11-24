@@ -138,7 +138,7 @@ export default function Body() {
                 <Slider
                     style={styles.slider}
                     minimumTrackTintColor={theme.colors.primary}
-                    maximumTrackTintColor={theme.colors.text ?? "#999999"}
+                    maximumTrackTintColor={theme.colors.text}
                     thumbTintColor={theme.colors.primary}
                     minimumValue={0}
                     step={1}
@@ -156,7 +156,7 @@ export default function Body() {
                 <Slider
                     style={styles.slider}
                     minimumTrackTintColor={theme.colors.primary}
-                    maximumTrackTintColor={theme.colors.text ?? "#999999"}
+                    maximumTrackTintColor={theme.colors.text}
                     thumbTintColor={theme.colors.primary}
                     minimumValue={0.3}
                     step={0.01}
@@ -186,7 +186,7 @@ export default function Body() {
                                 });
                             }}
                             style={styles.colorItemBlockContainer}>
-                            <View style={[styles.colorBlockContainer]}>
+                            <View style={[styles.colorBlockContainer, { borderColor: theme.colors.divider }]}>
                                 <Image
                                     resizeMode="repeat"
                                     emptySrc={ImgAsset.transparentBg}
@@ -261,7 +261,6 @@ const styles = StyleSheet.create({
         height: rpx(50),
         borderWidth: 1,
         borderStyle: "solid",
-        borderColor: "#ccc",
     },
     colorBlock: {
         width: "100%",

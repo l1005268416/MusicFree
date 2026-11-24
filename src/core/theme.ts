@@ -82,7 +82,7 @@ function setup() {
     } else {
         themeStore.setValue({
             id: currentTheme,
-            dark: true,
+            dark: Config.getConfig("theme.dark") ?? true,
             // @ts-ignore
             colors:
                 (Config.getConfig("theme.colors") as CustomizedColors) ??
@@ -121,6 +121,7 @@ function setTheme(
                 ...(extra?.colors ?? {}),
             },
         });
+        Config.setConfig("theme.dark", true);
     }
 
     Config.setConfig("theme.selectedTheme", themeName);
@@ -154,18 +155,24 @@ function setTheme(
 
 function setColors(colors: Partial<CustomizedColors>) {
     const currentTheme = themeStore.getValue();
-    if (currentTheme.id !== "p-light" && currentTheme.id !== "p-dark") {
-        const newTheme = {
-            ...currentTheme,
-            colors: {
-                ...currentTheme.colors,
-                ...colors,
-            },
-        };
-        Config.setConfig("theme.customColors", newTheme.colors);
-        Config.setConfig("theme.colors", newTheme.colors);
-        themeStore.setValue(newTheme);
+    const isBuiltin = currentTheme.id === "p-light" || currentTheme.id === "p-dark";
+    // 内置主题上修改颜色时，切到 custom 主题并保留当前配色，避免修改被静默忽略
+    const newTheme = {
+        ...currentTheme,
+        id: isBuiltin ? "custom" : currentTheme.id,
+        colors: {
+            ...currentTheme.colors,
+            ...colors,
+        },
+    };
+    if (isBuiltin) {
+        Config.setConfig("theme.selectedTheme", newTheme.id);
     }
+    newTheme.dark = newTheme.dark ?? true;
+    Config.setConfig("theme.dark", newTheme.dark);
+    Config.setConfig("theme.customColors", newTheme.colors);
+    Config.setConfig("theme.colors", newTheme.colors);
+    themeStore.setValue(newTheme);
 }
 
 function setBackground(backgroundInfo: Partial<IBackgroundInfo>) {

@@ -4,6 +4,7 @@ import rpx from "@/utils/rpx";
 import ListItem from "../base/listItem";
 
 import LocalMusicSheet from "@/core/localMusicSheet";
+import useColors from "@/hooks/useColors";
 import { showPanel } from "../panels/usePanel";
 import TitleAndTag from "./titleAndTag";
 import ThemeText from "../base/themeText";
@@ -23,6 +24,7 @@ interface IMusicItemProps {
     highlight?: boolean
 }
 export default function MusicItem(props: IMusicItemProps) {
+    const colors = useColors();
     const {
         musicItem,
         index,
@@ -75,7 +77,7 @@ export default function MusicItem(props: IMusicItemProps) {
                         {LocalMusicSheet.isLocalMusic(musicItem) && (
                             <Icon
                                 style={styles.icon}
-                                color="#11659a"
+                                color={colors.info}
                                 name="check-circle"
                                 size={rpx(22)}
                             />

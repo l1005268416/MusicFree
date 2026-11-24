@@ -61,23 +61,11 @@ export default function SearchMusicList() {
 }
 
 const style = StyleSheet.create({
-    appbar: {
-        shadowColor: "transparent",
-        backgroundColor: "#2b333eaa",
-    },
     searchBar: {
         minWidth: rpx(375),
         flex: 1,
         borderRadius: rpx(64),
         height: rpx(64),
-        fontSize: rpx(32),
-    },
-    input: {
-        padding: 0,
-        color: "#666666",
-        height: rpx(64),
-        fontSize: fontSizeConst.subTitle,
-        textAlignVertical: "center",
-        includeFontPadding: false,
+        fontSize: fontSizeConst.title,
     },
 });

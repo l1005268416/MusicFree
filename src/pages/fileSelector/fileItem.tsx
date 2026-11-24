@@ -6,7 +6,7 @@ import useTextColor from "@/hooks/useTextColor";
 import Checkbox from "@/components/base/checkbox";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import Icon from "@/components/base/icon.tsx";
-import { iconSizeConst } from "@/constants/uiConst.ts";
+import { fontSizeConst, iconSizeConst } from "@/constants/uiConst.ts";
 
 const ITEM_HEIGHT = rpx(96);
 
@@ -87,7 +87,7 @@ const styles = StyleSheet.create({
         justifyContent: "space-between",
     },
     folderIcon: {
-        fontSize: rpx(32),
+        fontSize: fontSizeConst.title,
         marginRight: rpx(14),
     },
     pathWrapper: {

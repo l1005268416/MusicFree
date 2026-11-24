@@ -934,7 +934,7 @@ export class Plugin {
                 // eslint-disable-next-line no-new-func
                 _instance = Function(`
                     'use strict';
-                    return function(require, __musicfree_require, module, exports, console, env, URL, process) {
+                    return function(require, __songjian_require, module, exports, console, env, URL, process) {
                         ${funcCode}
                     }
                 `)()(

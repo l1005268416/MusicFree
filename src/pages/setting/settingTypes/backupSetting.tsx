@@ -117,7 +117,7 @@ export default function BackupSetting() {
                 try {
                     const url = text.trim();
                     if (url.endsWith(".json") || url.endsWith(".txt")) {
-                        const raw = (await axios.get(text)).data;
+                        const raw = (await axios.get(text, { timeout: 20000 })).data;
                         await Backup.resume(raw, resumeMode);
                         Toast.success(t("toast.resumeSuccess"));
                         closePanel();
@@ -146,14 +146,14 @@ export default function BackupSetting() {
             password: password,
         });
 
-        if (!(await client.exists("/MusicFree/MusicFreeBackup.json"))) {
+        if (!(await client.exists("/SongjianMusic/SongjianMusicBackup.json"))) {
             Toast.warn(t("toast.backupFileNotFound"));
             return;
         }
 
         try {
             const resumeData = await client.getFileContents(
-                "/MusicFree/MusicFreeBackup.json",
+                "/SongjianMusic/SongjianMusicBackup.json",
                 {
                     format: "text",
                 },
@@ -184,12 +184,12 @@ export default function BackupSetting() {
             });
 
             const raw = Backup.backup();
-            if (!(await client.exists("/MusicFree"))) {
-                await client.createDirectory("/MusicFree");
+            if (!(await client.exists("/SongjianMusic"))) {
+                await client.createDirectory("/SongjianMusic");
             }
             // 临时文件
             await client.putFileContents(
-                "/MusicFree/MusicFreeBackup.json",
+                "/SongjianMusic/SongjianMusicBackup.json",
                 raw,
                 {
                     overwrite: true,

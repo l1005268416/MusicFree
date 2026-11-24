@@ -11,8 +11,6 @@ import {
     StyleSheet,
 } from "react-native";
 import Animated, {
-    Easing,
-    EasingFunction,
     runOnJS,
     useAnimatedReaction,
     useAnimatedStyle,
@@ -21,15 +19,8 @@ import Animated, {
 } from "react-native-reanimated";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { panelInfoStore } from "../usePanel";
+import { timingConfig } from "@/constants/commonConst";
 import NativeUtils from "@/native/utils";
-
-const ANIMATION_EASING: EasingFunction = Easing.out(Easing.exp);
-const ANIMATION_DURATION = 250;
-
-const timingConfig = {
-    duration: ANIMATION_DURATION,
-    easing: ANIMATION_EASING,
-};
 
 interface IPanelBaseProps {
     keyboardAvoidBehavior?: "height" | "padding" | "position" | "none";
@@ -63,7 +54,7 @@ export default function (props: IPanelBaseProps) {
     const hideCallbackRef = useRef<Function[]>([]);
 
     useEffect(() => {
-        snapPoint.value = withTiming(1, timingConfig);
+        snapPoint.value = withTiming(1, timingConfig.animationNormal);
 
         timerRef.current = setTimeout(() => {
             if (loading) {
@@ -78,7 +69,7 @@ export default function (props: IPanelBaseProps) {
         backHandlerRef.current = BackHandler.addEventListener(
             "hardwareBackPress",
             () => {
-                snapPoint.value = withTiming(0, timingConfig);
+                snapPoint.value = withTiming(0, timingConfig.animationNormal);
                 return true;
             },
         );
@@ -89,7 +80,7 @@ export default function (props: IPanelBaseProps) {
                 if (callback) {
                     hideCallbackRef.current.push(callback);
                 }
-                snapPoint.value = withTiming(0, timingConfig);
+                snapPoint.value = withTiming(0, timingConfig.animationNormal);
             },
         );
 
@@ -182,7 +173,7 @@ export default function (props: IPanelBaseProps) {
             <Pressable
                 style={style.maskWrapper}
                 onPress={() => {
-                    snapPoint.value = withTiming(0, timingConfig);
+                    snapPoint.value = withTiming(0, timingConfig.animationNormal);
                 }}>
                 <Animated.View
                     style={[style.maskWrapper, style.mask, maskAnimated]}

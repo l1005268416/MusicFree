@@ -1,4 +1,4 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="fun.upup.musicfree">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.fengye.songjian">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
@@ -38,8 +38,8 @@
               <action android:name="android.intent.action.VIEW" />
               <category android:name="android.intent.category.DEFAULT" />
               <category android:name="android.intent.category.BROWSABLE" />
-              <data android:scheme="musicfree" android:host="app"/>
-              <data android:scheme="musicfree" android:host="install"/>
+              <data android:scheme="songjian" android:host="app"/>
+              <data android:scheme="songjian" android:host="install"/>
           </intent-filter>          
           <!-- 处理音频文件 -->
           <intent-filter>

@@ -118,14 +118,20 @@ def appVersionCode = 400011
 
 
 android {
+    packagingOptions {
+        jniLibs {
+            useLegacyPackaging = true
+        }
+    }
+
     ndkVersion rootProject.ext.ndkVersion
     buildToolsVersion rootProject.ext.buildToolsVersion
     compileSdk rootProject.ext.compileSdkVersion
 
-    namespace "fun.upup.musicfree"
+    namespace "com.fengye.songjian"
 
     defaultConfig {
-        applicationId "fun.upup.musicfree"
+        applicationId "com.fengye.songjian"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode appVersionCode

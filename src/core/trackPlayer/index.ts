@@ -76,8 +76,8 @@ class TrackPlayer extends EventEmitter<{
         [MusicRepeatMode.SINGLE]: MusicRepeatMode.QUEUE,
         [MusicRepeatMode.QUEUE]: MusicRepeatMode.SHUFFLE,
     };
-    private static fakeAudioUrl = "musicfree://fake-audio";
-    private static proposedAudioUrl = "musicfree://proposed-audio";
+    private static fakeAudioUrl = "songjian://fake-audio";
+    private static proposedAudioUrl = "songjian://proposed-audio";
 
     constructor() {
         super();

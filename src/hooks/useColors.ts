@@ -35,6 +35,12 @@ export interface CustomizedColors extends IColors {
     card: string;
     /** paneltabbar 背景色 */
     tabBar?: string;
+    /** 成功状态颜色 */
+    success?: string;
+    /** 危险状态颜色 */
+    danger?: string;
+    /** 信息颜色 */
+    info?: string;
 }
 
 export default function useColors() {
@@ -43,7 +49,10 @@ export default function useColors() {
     const cColors: CustomizedColors = useMemo(() => {
         return {
             ...colors,
-            textSecondary: Color(colors.text).alpha(0.7).toString(),
+            // 仅在未显式配置 textSecondary 时派生，避免覆盖显式配置
+            textSecondary:
+                (colors as CustomizedColors).textSecondary ??
+                Color(colors.text).alpha(0.7).toString(),
             // @ts-ignore
             background: colors.pageBackground ?? colors.background,
         };

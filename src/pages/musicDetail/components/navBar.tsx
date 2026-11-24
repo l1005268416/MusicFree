@@ -51,10 +51,10 @@ export default function NavBar() {
                     try {
                         await Share.open({
                             type: "image/jpeg",
-                            title: "MusicFree-一个插件化的免费音乐播放器",
-                            message: "MusicFree-一个插件化的免费音乐播放器",
+                            title: "松间音乐-一个插件化的免费音乐播放器",
+                            message: "松间音乐-一个插件化的免费音乐播放器",
                             url: B64Asset.share,
-                            subject: "MusicFree分享",
+                            subject: "松间音乐分享",
                         });
                     } catch {}
                 }}

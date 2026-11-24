@@ -154,6 +154,7 @@ export default function PluginList() {
         const urls = Config.getConfig("plugin.subscribeUrl");
         if (!urls) {
             Toast.warn(t("toast.noSubscription"));
+            return;
         }
         setLoading(true);
 
@@ -164,12 +165,13 @@ export default function PluginList() {
             const urlItems = JSON.parse(urls!);
             if (Array.isArray(urlItems)) {
                 for (let i = 0; i < urlItems.length; ++i) {
+                    // .json 订阅会展开成多个插件，必须检查全部结果
                     const result = await installPluginFromUrl(urlItems[i].url);
-                    if (result[0]) {
-                        if (result[0].success) {
-                            successResults.push(result[0]);
+                    for (const r of result) {
+                        if (r.success) {
+                            successResults.push(r);
                         } else {
-                            failResults.push(result[0]);
+                            failResults.push(r);
                         }
                     }
                 }
@@ -177,40 +179,42 @@ export default function PluginList() {
                 throw new Error();
             }
 
-            if (!failResults.length) {
-                Toast.success(t("toast.installPluginSuccess"));
-            } else {
-                Toast.warn((successResults.length ? t("toast.partialPluginInstallFailed") : t("toast.allPluginInstallFailed")), {
-                    "type": "warn",
-                    "actionText": t("common.view"),
-                    "onActionClick": () => {
-                        showDialog("SimpleDialog", {
-                            title: t("pluginSetting.menu.pluginInstallFailedDialogTitle"),
-                            content: t("pluginSetting.pluginInstallFailedDialogContent", {
-                                detail: failResults.map(it => (it.pluginUrl ?? "") + "\n" + t("pluginSetting.failReason", {
-                                    reason: it.message ?? "",
-                                })).join("\n-----\n"),
-                            }),
-                        });
-                    },
-                });
-            }
-
         } catch {
-            if (urls?.length) {
-                const result = await installPluginFromUrl(urls);
-                if (result[0]) {
-                    if (result[0].success) {
-                        Toast.success(t("toast.installPluginSuccess"));
-                    } else {
-                        Toast.warn(t("toast.partialPluginInstallFailedWithReason", {
-                            reason: result[0].message ?? "",
-                        }));
-                    }
+            // 非 JSON 的单个 URL 配置：可能是 .js 也可能是 .json，统一展开检查结果
+            const result = await installPluginFromUrl(urls!);
+            for (const r of result) {
+                if (r.success) {
+                    successResults.push(r);
                 } else {
-                    Toast.warn(t("toast.subscriptionInvalid"));
+                    failResults.push(r);
                 }
             }
+            if (!successResults.length && !failResults.length) {
+                Toast.warn(t("toast.subscriptionInvalid"));
+                setLoading(false);
+                return;
+            }
+        }
+
+        if (!successResults.length) {
+            Toast.warn(t("toast.allPluginInstallFailed"));
+        } else if (failResults.length) {
+            Toast.warn(t("toast.partialPluginInstallFailed"), {
+                "type": "warn",
+                "actionText": t("common.view"),
+                "onActionClick": () => {
+                    showDialog("SimpleDialog", {
+                        title: t("pluginSetting.menu.pluginInstallFailedDialogTitle"),
+                        content: t("pluginSetting.pluginInstallFailedDialogContent", {
+                            detail: failResults.map(it => (it.pluginUrl ?? "") + "\n" + t("pluginSetting.failReason", {
+                                reason: it.message ?? "",
+                            })).join("\n-----\n"),
+                        }),
+                    });
+                },
+            });
+        } else {
+            Toast.success(t("toast.installPluginSuccess"));
         }
         setLoading(false);
     }
@@ -347,6 +351,7 @@ async function installPluginFromUrl(text: string): Promise<IInstallPluginResult[
         if (text.endsWith(".json")) {
             const jsonFile = (
                 await axios.get(inputUrl, {
+                    timeout: 20000,
                     headers: {
                         "Cache-Control": "no-cache",
                         Pragma: "no-cache",

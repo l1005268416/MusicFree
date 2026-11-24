@@ -40,6 +40,19 @@ const ee = new EventEmitter<{
 class PluginManager implements IPluginManager, IInjectable {
     private appConfigService!: IAppConfig;
 
+    /**
+     * 插件安装/更新必须串行执行：
+     * 并发安装时每个任务拿到相同的插件列表快照，
+     * 最后写入者会把前面已经成功安装的插件覆盖掉。
+     */
+    private installQueue: Promise<unknown> = Promise.resolve();
+
+    private enqueueInstallation<T>(task: () => Promise<T>): Promise<T> {
+        const run = this.installQueue.then(task, task);
+        this.installQueue = run.catch(() => {});
+        return run;
+    }
+
     injectDependencies(config: IAppConfig): void {
         this.appConfigService = config;
     }
@@ -186,6 +199,17 @@ class PluginManager implements IPluginManager, IInjectable {
             useExpoFs?: boolean;
         },
     ): Promise<IInstallPluginResult> {
+        return this.enqueueInstallation(() =>
+            this.doInstallPluginFromLocalFile(pluginPath, config),
+        );
+    }
+
+    private async doInstallPluginFromLocalFile(
+        pluginPath: string,
+        config?: IInstallPluginConfig & {
+            useExpoFs?: boolean;
+        },
+    ): Promise<IInstallPluginResult> {
         let funcCode: string;
         if (config?.useExpoFs) {
             funcCode = await readAsStringAsync(pluginPath);
@@ -273,9 +297,20 @@ class PluginManager implements IPluginManager, IInjectable {
         url: string,
         config?: IInstallPluginConfig,
     ): Promise<IInstallPluginResult> {
+        return this.enqueueInstallation(() =>
+            this.doInstallPluginFromUrl(url, config),
+        );
+    }
+
+    private async doInstallPluginFromUrl(
+        url: string,
+        config?: IInstallPluginConfig,
+    ): Promise<IInstallPluginResult> {
         try {
             const funcCode = (
                 await axios.get(url, {
+                    // 插件/订阅文件可能较大且服务器慢，不用全局默认 2s 超时
+                    timeout: 20000,
                     headers: {
                         "Cache-Control": "no-cache",
                         Pragma: "no-cache",
@@ -358,7 +393,7 @@ class PluginManager implements IPluginManager, IInjectable {
             devLog("error", "URL安装插件失败", e, e?.message);
             errorLog("URL安装插件失败", e);
 
-            if (e?.response?.statusCode === 404) {
+            if (e?.response?.status === 404) {
                 return {
                     success: false,
                     message: "插件不存在，请联系插件作者",

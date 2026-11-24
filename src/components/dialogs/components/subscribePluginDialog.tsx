@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import rpx from "@/utils/rpx";
+import { fontSizeConst } from "@/constants/uiConst";
 import { StyleSheet, View } from "react-native";
 import ThemeText from "@/components/base/themeText";
 import { hideDialog } from "../useDialog";
@@ -125,7 +126,7 @@ const style = StyleSheet.create({
         marginBottom: rpx(8),
     },
     label: {
-        fontSize: rpx(28),
+        fontSize: fontSizeConst.content,
         fontWeight: "500",
         opacity: 0.9,
     },
@@ -145,7 +146,7 @@ const style = StyleSheet.create({
         elevation: 2,
     },
     textInput: {
-        fontSize: rpx(28),
+        fontSize: fontSizeConst.content,
         includeFontPadding: false,
         paddingVertical: rpx(12),
         borderWidth: 0,

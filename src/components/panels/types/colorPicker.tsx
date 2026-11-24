@@ -1,6 +1,7 @@
 import React, { useMemo, useRef, useState, useCallback, useEffect } from "react";
 import { Image, StyleSheet, View } from "react-native";
 import rpx from "@/utils/rpx";
+import { fontSizeConst } from "@/constants/uiConst";
 import PanelBase from "../base/panelBase";
 import LinearGradient from "react-native-linear-gradient";
 import Color from "color";
@@ -443,7 +444,7 @@ const styles = StyleSheet.create({
         borderRadius: rpx(4),
         paddingHorizontal: rpx(12),
         paddingVertical: 0,
-        fontSize: rpx(28),
+        fontSize: fontSizeConst.content,
         color: "#333",
         backgroundColor: "#fff",
     },

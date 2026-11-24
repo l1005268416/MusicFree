@@ -15,7 +15,7 @@ export default function LocalMusicList() {
             <MusicList
                 musicList={musicList}
                 showIndex
-                state={RequestStateCode.IDLE}
+                state={musicList.length === 0 ? RequestStateCode.FINISHED : RequestStateCode.IDLE}
                 musicSheet={{
                     id: localMusicSheetId,
                     title: t("common.local"),

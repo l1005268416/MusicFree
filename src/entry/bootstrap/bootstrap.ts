@@ -226,7 +226,7 @@ async function extraMakeup() {
     async function handleLinkingUrl(url: string) {
         // 插件
         try {
-            if (url.startsWith("musicfree://install/")) {
+            if (url.startsWith("songjian://install/")) {
                 const plugins = url
                     .slice(20)
                     .split(",")

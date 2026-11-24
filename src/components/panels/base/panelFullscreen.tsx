@@ -9,8 +9,6 @@ import {
 } from "react-native";
 
 import Animated, {
-    Easing,
-    EasingFunction,
     runOnJS,
     useAnimatedReaction,
     useAnimatedStyle,
@@ -19,16 +17,9 @@ import Animated, {
 } from "react-native-reanimated";
 import useColors from "@/hooks/useColors";
 import { panelInfoStore } from "../usePanel";
+import { timingConfig } from "@/constants/commonConst";
 import { vh } from "@/utils/rpx.ts";
 import useOrientation from "@/hooks/useOrientation.ts";
-
-const ANIMATION_EASING: EasingFunction = Easing.out(Easing.exp);
-const ANIMATION_DURATION = 250;
-
-const timingConfig = {
-    duration: ANIMATION_DURATION,
-    easing: ANIMATION_EASING,
-};
 
 interface IPanelFullScreenProps {
     // 有遮罩
@@ -95,7 +86,7 @@ export default function (props: IPanelFullScreenProps) {
 
     const maskAnimated = useAnimatedStyle(() => {
         return {
-            opacity: withTiming(snapPoint.value * 0.5, timingConfig),
+            opacity: withTiming(snapPoint.value * 0.5, timingConfig.animationNormal),
         };
     });
 
@@ -106,7 +97,7 @@ export default function (props: IPanelFullScreenProps) {
                     {
                         translateY: withTiming(
                             (1 - snapPoint.value) * windowHeight,
-                            timingConfig,
+                            timingConfig.animationNormal,
                         ),
                     },
                 ],
@@ -117,11 +108,11 @@ export default function (props: IPanelFullScreenProps) {
                     {
                         scale: withTiming(
                             0.3 + snapPoint.value * 0.7,
-                            timingConfig,
+                            timingConfig.animationNormal,
                         ),
                     },
                 ],
-                opacity: withTiming(snapPoint.value, timingConfig),
+                opacity: withTiming(snapPoint.value, timingConfig.animationNormal),
             };
         }
     });
@@ -149,7 +140,7 @@ export default function (props: IPanelFullScreenProps) {
                 <Pressable
                     style={style.maskWrapper}
                     onPress={() => {
-                        snapPoint.value = withTiming(0, timingConfig);
+                        snapPoint.value = withTiming(0, timingConfig.animationNormal);
                     }}>
                     <Animated.View
                         style={[style.maskWrapper, style.mask, maskAnimated]}

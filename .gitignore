@@ -86,3 +86,7 @@ scripts/
 .expo
 dist/
 web-build/
+
+# Generated Expo build artifacts
+assets/app.config
+assets/index.android.bundle

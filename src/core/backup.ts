@@ -4,6 +4,7 @@ import { compare } from "compare-versions";
 import PluginManager from "./pluginManager";
 import MusicSheet from "@/core/musicSheet";
 import { ResumeMode } from "@/constants/commonConst.ts";
+import type { IInstallPluginResult } from "@/types/core/pluginManager";
 
 /**
  * 结果：一份大的json文件
@@ -63,7 +64,7 @@ async function resume(
                     ),
             )
         ) {
-            return;
+            return undefined;
         }
         return PluginManager.installPluginFromUrl(_.srcUrl);
     });
@@ -71,7 +72,33 @@ async function resume(
     /** 恢复歌单 */
     const resumeMusicSheets = MusicSheet.resumeSheets(musicSheets, resumeMode);
 
-    return Promise.all([...(resumePlugins ?? []), resumeMusicSheets]);
+    // 等待所有插件安装结果，个别失败不阻塞歌单恢复
+    const pluginResults = await Promise.all(
+        (resumePlugins ?? []).map(async r => {
+            if (!r) return null;
+            try {
+                return await r;
+            } catch (e: any) {
+                return {
+                    success: false,
+                    message: e?.message ?? String(e),
+                } as IInstallPluginResult;
+            }
+        }),
+    );
+    await resumeMusicSheets;
+
+    const failed = pluginResults.filter(
+        (r): r is IInstallPluginResult => !!r && !r.success,
+    );
+    if (failed.length) {
+        throw new Error(
+            `${failed.length} 个插件恢复失败（${failed
+                .slice(0, 2)
+                .map(f => f.message ?? "未知原因")
+                .join("；")}${failed.length > 2 ? "..." : ""}）`,
+        );
+    }
 }
 
 const Backup = {

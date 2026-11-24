@@ -1,6 +1,7 @@
 import React from "react";
 import { StyleSheet, TouchableOpacity, View } from "react-native";
 import rpx from "@/utils/rpx";
+import { fontSizeConst } from "@/constants/uiConst";
 import ThemeText from "@/components/base/themeText";
 
 import { setCloseAfterPlayEnd, setScheduleClose, useCloseAfterPlayEnd, useScheduleCloseCountDown } from "@/utils/scheduleClose";
@@ -133,7 +134,7 @@ const styles = StyleSheet.create({
     },
     cancelButtonText: {
         color: "#ffffff",
-        fontSize: rpx(24),
+        fontSize: fontSizeConst.caption,
     },
     closeAfterPlayContainer: {
         flexDirection: "row",

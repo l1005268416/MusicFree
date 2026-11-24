@@ -14,10 +14,10 @@ import StatusBar from "./statusBar";
 import color from "color";
 import IconButton from "./iconButton";
 import globalStyle from "@/constants/globalStyle";
+import { timingConfig } from "@/constants/commonConst";
 import ThemeText from "./themeText";
 import { useNavigation } from "@react-navigation/native";
 import Animated, {
-    Easing,
     useAnimatedStyle,
     useSharedValue,
     withTiming,
@@ -48,14 +48,6 @@ interface IAppBarProps {
     onBackPress?: () => void;
 }
 
-const ANIMATION_EASING: Animated.EasingFunction = Easing.out(Easing.exp);
-const ANIMATION_DURATION = 500;
-
-const timingConfig = {
-    duration: ANIMATION_DURATION,
-    easing: ANIMATION_EASING,
-};
-
 export default function AppBar(props: IAppBarProps) {
     const {
         titleTextOpacity = 1,
@@ -84,9 +76,9 @@ export default function AppBar(props: IAppBarProps) {
 
     useEffect(() => {
         if (showMenu) {
-            scaleRate.value = withTiming(1, timingConfig);
+            scaleRate.value = withTiming(1, timingConfig.animationSlow);
         } else {
-            scaleRate.value = withTiming(0, timingConfig);
+            scaleRate.value = withTiming(0, timingConfig.animationSlow);
         }
     }, [showMenu]);
 

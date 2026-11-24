@@ -49,7 +49,7 @@ export default function History() {
             <MusicList
                 musicList={musicHistoryList}
                 showIndex
-                state={RequestStateCode.IDLE}
+                state={musicHistoryList.length === 0 ? RequestStateCode.FINISHED : RequestStateCode.IDLE}
                 musicSheet={{
                     id: musicHistorySheetId,
                     title: t("history.title"),

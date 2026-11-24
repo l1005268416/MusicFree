@@ -52,6 +52,7 @@ export interface IAppConfigProperties {
     "theme.customColors"?: CustomizedColors;
     "theme.followSystem": boolean;
     "theme.selectedTheme": string;
+    "theme.dark": boolean;
 
     // Backup
     "backup.resumeMode": ResumeMode;

@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, ScrollView, Image, Platform } from "react-nativ
 import DeviceInfo from "react-native-device-info";
 import useColors from "@/hooks/useColors";
 import rpx from "@/utils/rpx";
+import { fontSizeConst } from "@/constants/uiConst";
 import LinkText from "@/components/base/linkText";
 import { ImgAsset } from "@/constants/assetsConst";
 import ThemeText from "@/components/base/themeText";
@@ -310,11 +311,11 @@ const styles = StyleSheet.create({
         alignItems: "center",
     },
     deviceInfoLabel: {
-        fontSize: rpx(28),
+        fontSize: fontSizeConst.content,
         flex: 1,
     },
     deviceInfoValue: {
-        fontSize: rpx(28),
+        fontSize: fontSizeConst.content,
         flex: 2,
         textAlign: "right",
         fontWeight: "500",
@@ -339,7 +340,7 @@ const styles = StyleSheet.create({
         padding: rpx(16),
     },
     stackText: {
-        fontSize: rpx(24),
+        fontSize: fontSizeConst.caption,
         fontFamily: "monospace",
         lineHeight: rpx(32),
     },

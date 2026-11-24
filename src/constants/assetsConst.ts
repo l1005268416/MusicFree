@@ -21,7 +21,7 @@ export const ImgAsset = {
         150: require("@/assets/imgs/150x.png"),
         175: require("@/assets/imgs/175x.png"),
         200: require("@/assets/imgs/200x.png"),
-    } as any,
+    } as Record<number, any>,
     transparentBg: require("@/assets/imgs/transparent-bg.png"),
 } as const;
 

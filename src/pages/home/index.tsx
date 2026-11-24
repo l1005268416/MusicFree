@@ -46,19 +46,6 @@ function HomeStatusBar() {
     );
 }
 
-// function Body() {
-//     const orientation = useOrientation();
-//     return (
-//         <ScrollView
-//             style={[
-//                 styles.appWrapper,
-//                 orientation === 'horizontal' ? styles.flexRow : null,
-//             ]}>
-//             <Operations orientation={orientation} />
-//         </ScrollView>
-//     );
-// }
-
 const LeftDrawer = createDrawerNavigator();
 export default function App() {
     return (
@@ -80,8 +67,5 @@ const styles = StyleSheet.create({
     appWrapper: {
         flexDirection: "column",
         flex: 1,
-    },
-    flexRow: {
-        flexDirection: "row",
     },
 });
